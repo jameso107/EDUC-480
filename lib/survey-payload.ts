@@ -1,4 +1,4 @@
-/** Shared shape for POST /api/survey and the client form. */
+/** Shared shape for the post-survey (client → Formspree). */
 
 export type Likert = "1" | "2" | "3" | "4" | "5";
 
@@ -17,8 +17,6 @@ export interface SurveyPayload {
   schoolsApproach?: string;
   /** Optional free text */
   additionalComments?: string;
-  /** Honeypot — must be empty */
-  company?: string;
 }
 
 export const LIKERT_LABELS: Record<Likert, string> = {

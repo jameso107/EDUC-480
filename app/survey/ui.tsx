@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { Likert } from "@/lib/survey-payload";
+import { buildSurveyEmailText } from "@/lib/survey-email";
+import { DEFAULT_FORMSPREE_SURVEY_URL } from "@/lib/survey-form-endpoint";
+import { isLikert, type Likert, type SurveyPayload } from "@/lib/survey-payload";
 
 const likertQuestions: {
   name: keyof Pick<
@@ -36,6 +38,14 @@ const likertShort: Record<Likert, string> = {
   "5": "SA",
 };
 
+const likertLegend: Record<Likert, string> = {
+  "1": "Strongly disagree",
+  "2": "Disagree",
+  "3": "Neutral",
+  "4": "Agree",
+  "5": "Strongly agree",
+};
+
 type FormState = {
   clarityResponsibleVsProblematic: Likert | "";
   confidenceEthicalUse: Likert | "";
@@ -44,7 +54,8 @@ type FormState = {
   habitGoingForward: string;
   schoolsApproach: string;
   additionalComments: string;
-  company: string;
+  /** Honeypot — must stay empty (avoid name "company" or browsers autofill it). */
+  alpHp: string;
 };
 
 const initial: FormState = {
@@ -55,8 +66,50 @@ const initial: FormState = {
   habitGoingForward: "",
   schoolsApproach: "",
   additionalComments: "",
-  company: "",
+  alpHp: "",
 };
+
+const MIN_PARAGRAPH = 10;
+
+function validate(form: FormState): string | null {
+  if (!form.clarityResponsibleVsProblematic) {
+    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+  }
+  if (!form.confidenceEthicalUse) {
+    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+  }
+  if (!form.promptLearningFocus) {
+    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+  }
+  if (form.responsibleAiMeaning.trim().length < MIN_PARAGRAPH) {
+    return `The “responsible AI use” answer needs at least ${MIN_PARAGRAPH} characters.`;
+  }
+  if (form.habitGoingForward.trim().length < MIN_PARAGRAPH) {
+    return `The “habit or rule” answer needs at least ${MIN_PARAGRAPH} characters.`;
+  }
+  return null;
+}
+
+function toPayload(form: FormState): SurveyPayload | null {
+  const a = form.clarityResponsibleVsProblematic;
+  const b = form.confidenceEthicalUse;
+  const c = form.promptLearningFocus;
+  if (!isLikert(a) || !isLikert(b) || !isLikert(c)) return null;
+  const meaning = form.responsibleAiMeaning.trim();
+  const habit = form.habitGoingForward.trim();
+  if (meaning.length < MIN_PARAGRAPH || habit.length < MIN_PARAGRAPH) return null;
+  const schools = form.schoolsApproach.trim();
+  const extra = form.additionalComments.trim();
+  return {
+    clarityResponsibleVsProblematic: a,
+    confidenceEthicalUse: b,
+    promptLearningFocus: c,
+    responsibleAiMeaning: meaning,
+    habitGoingForward: habit,
+    schoolsApproach: schools || undefined,
+    additionalComments: extra || undefined,
+  };
+}
 
 export function SurveyForm() {
   const [form, setForm] = useState<FormState>(initial);
@@ -65,29 +118,64 @@ export function SurveyForm() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus("submitting");
     setMessage(null);
+
+    if (form.alpHp.trim() !== "") {
+      setStatus("success");
+      setMessage("Thank you—your responses were submitted.");
+      return;
+    }
+
+    const err = validate(form);
+    if (err) {
+      setStatus("error");
+      setMessage(err);
+      return;
+    }
+
+    const payload = toPayload(form);
+    if (!payload) {
+      setStatus("error");
+      setMessage("Something is incomplete. Check the scale questions and both short answers.");
+      return;
+    }
+
+    setStatus("submitting");
+    const submittedAt = new Date().toISOString();
+    const subject = `[Playbook Post-Survey] ${submittedAt.slice(0, 10)}`;
+    const messageBody = buildSurveyEmailText(payload, { submittedAt });
+
     try {
-      const res = await fetch("/api/survey", {
+      const res = await fetch(DEFAULT_FORMSPREE_SURVEY_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          clarityResponsibleVsProblematic: form.clarityResponsibleVsProblematic,
-          confidenceEthicalUse: form.confidenceEthicalUse,
-          promptLearningFocus: form.promptLearningFocus,
-          responsibleAiMeaning: form.responsibleAiMeaning,
-          habitGoingForward: form.habitGoingForward,
-          schoolsApproach: form.schoolsApproach || undefined,
-          additionalComments: form.additionalComments || undefined,
-          company: form.company,
+          _subject: subject,
+          message: messageBody,
+          _gotcha: "",
         }),
       });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
+
+      let data: { ok?: boolean; error?: string } = {};
+      try {
+        data = (await res.json()) as { ok?: boolean; error?: string };
+      } catch {
+        /* ignore */
+      }
+
       if (!res.ok) {
         setStatus("error");
-        setMessage(data.error ?? "Something went wrong.");
+        setMessage(
+          typeof data.error === "string"
+            ? data.error
+            : "The form could not be sent. Check your connection or try again in a moment.",
+        );
         return;
       }
+
       setStatus("success");
       setMessage("Thank you—your responses were submitted.");
       setForm(initial);
@@ -97,24 +185,24 @@ export function SurveyForm() {
     }
   }
 
-  const disabled =
-    status === "submitting" ||
-    !form.clarityResponsibleVsProblematic ||
-    !form.confidenceEthicalUse ||
-    !form.promptLearningFocus ||
-    form.responsibleAiMeaning.trim().length < 10 ||
-    form.habitGoingForward.trim().length < 10;
+  const submitting = status === "submitting";
 
   return (
     <form
       onSubmit={onSubmit}
+      noValidate
       className="relative space-y-10 rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
+      <p className="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
+        To submit: choose <strong>one circle per row</strong> (SD → SA), then write at least{" "}
+        {MIN_PARAGRAPH} characters in each of the two boxes below.
+      </p>
+
       <fieldset className="space-y-8">
         <legend className="text-base font-semibold text-ink">Skills and understanding</legend>
         <p className="text-sm text-slate-600">
-          Scale: SD = strongly disagree, D = disagree, N = neutral, A = agree, SA = strongly
-          agree.
+          SD = strongly disagree · D = disagree · N = neutral · A = agree · SA = strongly agree.
+          Tap a circle or its label.
         </p>
         {likertQuestions.map((q) => (
           <div key={q.name}>
@@ -123,7 +211,7 @@ export function SurveyForm() {
             </p>
             <div
               className="mt-2 flex flex-wrap gap-2"
-              role="group"
+              role="radiogroup"
               aria-labelledby={`label-${q.name}`}
             >
               {likertOptions.map((v) => {
@@ -136,6 +224,7 @@ export function SurveyForm() {
                         ? "border-accent bg-accent/10 font-medium text-accent"
                         : "border-slate-300 text-slate-700 hover:border-slate-400"
                     }`}
+                    title={likertLegend[v]}
                   >
                     <input
                       type="radio"
@@ -143,9 +232,12 @@ export function SurveyForm() {
                       value={v}
                       checked={form[q.name] === v}
                       onChange={() => setForm((f) => ({ ...f, [q.name]: v }))}
-                      className="sr-only"
+                      className="h-4 w-4 shrink-0 border-slate-300 text-accent focus:ring-accent"
                     />
-                    <span title={v}>{likertShort[v]}</span>
+                    <span>
+                      {likertShort[v]}{" "}
+                      <span className="text-xs font-normal text-slate-500">({likertLegend[v]})</span>
+                    </span>
                   </label>
                 );
               })}
@@ -161,8 +253,7 @@ export function SurveyForm() {
         </label>
         <textarea
           id="meaning"
-          required
-          minLength={10}
+          minLength={MIN_PARAGRAPH}
           maxLength={4000}
           rows={4}
           value={form.responsibleAiMeaning}
@@ -177,8 +268,7 @@ export function SurveyForm() {
         </label>
         <textarea
           id="habit"
-          required
-          minLength={10}
+          minLength={MIN_PARAGRAPH}
           maxLength={4000}
           rows={4}
           value={form.habitGoingForward}
@@ -215,17 +305,19 @@ export function SurveyForm() {
         />
       </div>
 
-      {/* Honeypot — hidden from users */}
-      <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-        <label htmlFor="company">Company</label>
+      <div
+        className="pointer-events-none absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0"
+        aria-hidden="true"
+      >
+        <label htmlFor="alp-hp">Leave blank</label>
         <input
-          id="company"
-          name="company"
+          id="alp-hp"
+          name="alp_hp"
           type="text"
           tabIndex={-1}
           autoComplete="off"
-          value={form.company}
-          onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))}
+          value={form.alpHp}
+          onChange={(e) => setForm((f) => ({ ...f, alpHp: e.target.value }))}
         />
       </div>
 
@@ -242,10 +334,10 @@ export function SurveyForm() {
 
       <button
         type="submit"
-        disabled={disabled}
-        className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accentMuted disabled:cursor-not-allowed disabled:opacity-40"
+        disabled={submitting}
+        className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accentMuted disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "submitting" ? "Submitting…" : "Submit survey"}
+        {submitting ? "Submitting…" : "Submit survey"}
       </button>
     </form>
   );

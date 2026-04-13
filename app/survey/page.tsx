@@ -14,9 +14,9 @@ export default function SurveyPage() {
         <h1 className="text-3xl font-bold tracking-tight text-ink">Post-survey</h1>
         <p className="mt-3 max-w-2xl text-slate-600">
           This short survey helps measure how your understanding and skills around
-          responsible AI may have changed. Answers are submitted through a simple
-          contact-style form and emailed to the address configured for that form—do
-          not include passwords or private personal details.
+          responsible AI may have changed. When you submit, your answers go straight
+          to our Formspree inbox (same idea as a contact form). Do not include
+          passwords or private personal details.
         </p>
       </header>
       <SurveyForm />
