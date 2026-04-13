@@ -2,13 +2,13 @@ import type { SurveyPayload } from "./survey-payload";
 import { LIKERT_LABELS } from "./survey-payload";
 
 function formatLikert(v: keyof typeof LIKERT_LABELS) {
-  return `${v} — ${LIKERT_LABELS[v]}`;
+  return `${v}: ${LIKERT_LABELS[v]}`;
 }
 
 /** Plain-text body suitable for a “contact form” email (Formspree, etc.). */
 export function buildSurveyEmailText(p: SurveyPayload, meta: { submittedAt: string }) {
   const lines = [
-    "AI Learning Playbook — post-survey",
+    "AI Learning Playbook: post-survey",
     "",
     `Submitted at (UTC): ${meta.submittedAt}`,
     "",

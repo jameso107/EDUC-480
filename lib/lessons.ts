@@ -12,11 +12,11 @@ export const lessons: LessonModule[] = [
         heading: "What AI can do well for school",
         body: "AI can explain ideas in new words, ask you questions, suggest study plans, quiz you, and help you notice gaps in a draft you already wrote. Those uses keep you in charge of the final ideas and evidence.",
         example:
-          "Good fit: “I tried this problem and got stuck at step 2—can you ask me a guiding question?”",
+          "Good fit: “I tried this problem and got stuck at step 2. Can you ask me a guiding question?”",
       },
       {
         heading: "When AI becomes a shortcut",
-        body: "If AI does the thinking you were assigned to do—like drafting a full essay you submit as your own, solving every problem without your work, or giving answers during an assessment—that usually crosses into cheating or academic dishonesty.",
+        body: "If AI does the thinking you were assigned to do (like drafting a full essay you submit as your own, solving every problem without your work, or giving answers during an assessment), that usually crosses into cheating or academic dishonesty.",
         example:
           "Risky: “Write my entire lab conclusion so I can paste it.”",
       },
@@ -54,7 +54,7 @@ export const lessons: LessonModule[] = [
       },
       {
         heading: "Yellow light (depends on the assignment)",
-        body: "Translation help, summarizing long readings, code suggestions, or math hints. These can be fine—or not—depending on teacher rules, assessment type, and whether you verify outputs.",
+        body: "Translation help, summarizing long readings, code suggestions, or math hints. These can be fine or not, depending on teacher rules, assessment type, and whether you verify outputs.",
         example:
           "If your teacher wants evidence you read the novel, summarizing instead of reading is risky.",
       },
@@ -82,7 +82,7 @@ export const lessons: LessonModule[] = [
     slug: "responsible-prompts",
     title: "How to write a responsible AI prompt",
     summary:
-      "Better prompts share context, show your attempt, and ask for learning moves—not completion.",
+      "Better prompts share context, show your attempt, and ask for learning moves, not completion.",
     readingLevel: "High school",
     sections: [
       {
@@ -93,7 +93,7 @@ export const lessons: LessonModule[] = [
         heading: "Ask for a learning move",
         body: "Use verbs like explain, quiz, hint, check, compare, or outline next steps. Avoid verbs like write, complete, solve for me, or give answers.",
         example:
-          "Instead of “solve #12,” try “I got x = 3 but the answer key says 4—what mistake should I check for?”",
+          "Instead of “solve #12,” try “I got x = 3 but the answer key says 4. What mistake should I check for?”",
       },
       {
         heading: "Invite verification",
@@ -106,7 +106,7 @@ export const lessons: LessonModule[] = [
       question: "Which prompt is most responsible for studying?",
       options: [
         "“Give me the essay introduction I can turn in.”",
-        "“Here is my intro—what is unclear, and what question should I answer next?”",
+        "“Here is my intro. What is unclear, and what question should I answer next?”",
         "“Answer every question on my worksheet.”",
         "“Write my lab report in my voice.”",
       ],
@@ -128,7 +128,7 @@ export const lessons: LessonModule[] = [
       },
       {
         heading: "Bias and oversimplification",
-        body: "AI may flatten nuance in history, literature, or ethics. Use it to generate questions for you to investigate—not as a single authority.",
+        body: "AI may flatten nuance in history, literature, or ethics. Use it to generate questions for you to investigate, not as a single authority.",
       },
       {
         heading: "What to do",

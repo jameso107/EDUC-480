@@ -23,7 +23,7 @@ export const promptExercises: PromptExercise[] = [
       "Ask the AI to check your work and explain mistakes.",
     ],
     idealPrompt:
-      "I balanced H2 + O2 -> H2O as ... but I am unsure about the oxygen count—what should I double-check?",
+      "I balanced H2 + O2 -> H2O as ... but I am unsure about the oxygen count. What should I double-check?",
     rationale:
       "You attempt the work first and target a specific conceptual slip.",
   },

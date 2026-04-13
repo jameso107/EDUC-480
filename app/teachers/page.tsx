@@ -22,13 +22,13 @@ export default function TeachersPage() {
         <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
           <li>Concrete examples of support versus outsourcing</li>
           <li>Interactive practice with explanations</li>
-          <li>A coach role-modeled in system instructions—not an unconstrained chatbot</li>
+          <li>A coach role-modeled in system instructions, not an unconstrained chatbot</li>
           <li>Explicit reminders that classroom rules override site guidance</li>
         </ul>
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-ink">Chatbot guardrails (MVP)</h2>
+        <h2 className="text-xl font-semibold text-ink">Chatbot guardrails</h2>
         <p className="mt-3 text-slate-700">
           The server attaches a strict system prompt that refuses final-submission
           writing, homework completion, and test answers; it redirects to hints,
@@ -37,8 +37,8 @@ export default function TeachersPage() {
         </p>
         <p className="mt-3 text-sm text-slate-600">
           Analytics: the API logs a coarse intent category (for example,
-          learning support vs integrity risk) based on keyword signals—not full
-          transcript storage by default in this prototype.
+          learning support vs integrity risk) based on keyword signals, not full
+          transcript storage by default on this site.
         </p>
       </section>
 

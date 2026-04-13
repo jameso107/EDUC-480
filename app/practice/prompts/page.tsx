@@ -16,7 +16,7 @@ export default function PromptsPage() {
         </h1>
         <p className="mt-3 max-w-2xl text-slate-600">
           Read the risky prompt, write your own improvement, then compare with a
-          strong example. This is practice—not automatic grading of every possible
+          strong example. This is practice, not automatic grading of every possible
           good answer.
         </p>
       </header>

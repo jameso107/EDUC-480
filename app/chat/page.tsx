@@ -3,7 +3,7 @@ import { ChatClient } from "./ui";
 
 export const metadata: Metadata = {
   title: "Chat",
-  description: "Ethical learning coach chat—hints and questions, not answer outsourcing.",
+  description: "Ethical learning coach chat: hints and questions, not answer outsourcing.",
 };
 
 export default function ChatPage() {

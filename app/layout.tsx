@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s · AI Learning Playbook",
   },
   description:
-    "Practice ethical, responsible AI use for school with guided lessons, scenarios, and a chatbot built to help you think—not cheat.",
+    "Practice ethical, responsible AI use for school with guided lessons, scenarios, and a chatbot built to help you think, not cheat.",
 };
 
 export default function RootLayout({

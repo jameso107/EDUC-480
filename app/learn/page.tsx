@@ -14,7 +14,7 @@ export default function LearnIndexPage() {
         <h1 className="text-3xl font-bold tracking-tight text-ink">Learn</h1>
         <p className="mt-3 max-w-2xl text-slate-600">
           Short modules with examples, a reflection prompt, and a quick check for
-          understanding. Content is general guidance—your teacher&apos;s rules
+          understanding. Content is general guidance; your teacher&apos;s rules
           come first.
         </p>
       </header>

@@ -15,7 +15,7 @@ export default function ScenariosPage() {
           Scenario practice
         </h1>
         <p className="mt-3 max-w-2xl text-slate-600">
-          For each card, pick the best label. Real assignments vary—use this as
+          For each card, pick the best label. Real assignments vary, so use this as
           practice for judgment, not a guarantee about your school.
         </p>
       </header>

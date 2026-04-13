@@ -109,7 +109,7 @@ export function LessonClient({
             }`}
             role="status"
           >
-            {correct ? "Nice—" : "Not quite—"}
+            {correct ? "Nice. " : "Not quite. "}
             {quiz.explanation}
           </p>
         ) : null}

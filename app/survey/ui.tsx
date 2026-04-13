@@ -54,7 +54,7 @@ type FormState = {
   habitGoingForward: string;
   schoolsApproach: string;
   additionalComments: string;
-  /** Honeypot — must stay empty (avoid name "company" or browsers autofill it). */
+  /** Honeypot: must stay empty (avoid name "company" or browsers autofill it). */
   alpHp: string;
 };
 
@@ -73,13 +73,13 @@ const MIN_PARAGRAPH = 10;
 
 function validate(form: FormState): string | null {
   if (!form.clarityResponsibleVsProblematic) {
-    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+    return "Please choose an answer for all three scale questions (the SD to SA rows).";
   }
   if (!form.confidenceEthicalUse) {
-    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+    return "Please choose an answer for all three scale questions (the SD to SA rows).";
   }
   if (!form.promptLearningFocus) {
-    return "Please choose an answer for all three scale questions (the SD–SA rows).";
+    return "Please choose an answer for all three scale questions (the SD to SA rows).";
   }
   if (form.responsibleAiMeaning.trim().length < MIN_PARAGRAPH) {
     return `The “responsible AI use” answer needs at least ${MIN_PARAGRAPH} characters.`;
@@ -122,7 +122,7 @@ export function SurveyForm() {
 
     if (form.alpHp.trim() !== "") {
       setStatus("success");
-      setMessage("Thank you—your responses were submitted.");
+      setMessage("Thank you. Your responses were submitted.");
       return;
     }
 
@@ -177,7 +177,7 @@ export function SurveyForm() {
       }
 
       setStatus("success");
-      setMessage("Thank you—your responses were submitted.");
+      setMessage("Thank you. Your responses were submitted.");
       setForm(initial);
     } catch {
       setStatus("error");

@@ -28,7 +28,7 @@ export function PromptsClient({ exercises }: { exercises: PromptExercise[] }) {
         <h2 className="text-lg font-semibold text-ink">Your rewrite</h2>
         <p className="mt-2 text-sm text-slate-600">
           Aim for learning moves: show your attempt, ask for questions, hints,
-          brainstorming, or feedback—not finished submission text.
+          brainstorming, or feedback, not finished submission text.
         </p>
         <label className="mt-4 block text-sm font-medium text-slate-700" htmlFor="rewrite">
           Revised prompt

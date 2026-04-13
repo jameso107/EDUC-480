@@ -7,7 +7,7 @@ export const scenarios: Scenario[] = [
     text: "You have an essay due tomorrow. You already wrote a draft and ask the AI: “Can you tell me where my argument is unclear?”",
     correct: "responsible",
     explanation:
-      "You kept authorship and asked for feedback on your own draft—this supports revision and critical thinking.",
+      "You kept authorship and asked for feedback on your own draft. That supports revision and critical thinking.",
   },
   {
     id: "hist-essay-full",
@@ -95,7 +95,7 @@ export const scenarios: Scenario[] = [
     text: "You practice a dialogue with AI and ask it to correct your grammar after each reply you write.",
     correct: "responsible",
     explanation:
-      "You are producing the language and using feedback to improve—similar to tutoring when allowed.",
+      "You are producing the language and using feedback to improve, similar to tutoring when allowed.",
   },
   {
     id: "hist-outline-notes",

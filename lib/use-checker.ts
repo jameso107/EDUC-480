@@ -102,6 +102,6 @@ export function classifyUseDescription(input: string): CheckerResult {
     summary:
       "This description is not clearly harmful, but it is also not clearly limited to learning support. Add what you already tried and what kind of help you want.",
     alternative:
-      "Try: “I wrote a thesis sentence—can you ask me two questions to strengthen it?”",
+      "Try: “I wrote a thesis sentence. Can you ask me two questions to strengthen it?”",
   };
 }

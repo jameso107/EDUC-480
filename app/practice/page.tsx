@@ -23,7 +23,7 @@ export default function PracticeHubPage() {
         >
           <h2 className="text-lg font-semibold text-ink">Scenario cards</h2>
           <p className="mt-2 text-sm text-slate-600">
-            Decide if each use is responsible, questionable, or unethical—then
+            Decide if each use is responsible, questionable, or unethical, then
             read why.
           </p>
         </Link>

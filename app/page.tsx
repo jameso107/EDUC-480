@@ -34,7 +34,7 @@ export default function HomePage() {
         {[
           {
             title: "Digital citizenship",
-            body: "Green, yellow, and red lights for real school situations—not vague rules.",
+            body: "Green, yellow, and red lights for real school situations, not vague rules.",
           },
           {
             title: "Study skills",
@@ -68,7 +68,7 @@ export default function HomePage() {
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <h2 className="text-lg font-semibold text-ink">After you finish</h2>
         <p className="mt-2 max-w-2xl text-slate-600">
-          Help us understand how your AI literacy and opinions evolved—complete the
+          Help us understand how your AI literacy and opinions evolved. Complete the
           short post-survey when you are done with the playbook.
         </p>
         <div className="mt-4">

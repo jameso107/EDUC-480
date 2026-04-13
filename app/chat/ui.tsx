@@ -7,7 +7,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 const STARTER: Msg = {
   role: "assistant",
   content:
-    "Hi! I am here to coach learning—not to replace it. What topic are you working on, what have you tried so far, and what kind of help would help you think (explain, quiz, hint, brainstorm, or feedback on your draft)?",
+    "Hi! I am here to coach learning, not to replace it. What topic are you working on, what have you tried so far, and what kind of help would help you think (explain, quiz, hint, brainstorm, or feedback on your draft)?",
 };
 
 export function ChatClient() {
@@ -103,7 +103,7 @@ export function ChatClient() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={2}
-              placeholder="Example: I wrote a thesis sentence about Macbeth—can you ask me two questions to strengthen it?"
+              placeholder="Example: I wrote a thesis sentence about Macbeth. Can you ask me two questions to strengthen it?"
               className="min-h-[44px] flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-ink shadow-inner"
             />
             <button
