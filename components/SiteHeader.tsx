@@ -5,6 +5,7 @@ const links = [
   { href: "/practice", label: "Practice" },
   { href: "/chat", label: "Chat" },
   { href: "/checker", label: "Is This Okay?" },
+  { href: "/survey", label: "Post-survey" },
   { href: "/teachers", label: "For Teachers" },
 ];
 
